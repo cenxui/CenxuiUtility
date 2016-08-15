@@ -156,23 +156,4 @@ public final class SystemProperties {
 	public static boolean isWindows() {
 		return getOSName().startsWith("Windows");
 	}
-	
-	public static void main(String[] args) {
-		System.out.println("isWindows" + isWindows());		
-		System.out.println("FileSeparator" + getFileSeparator());
-		System.out.println("JavaClassPath" + getJavaClassPath());
-		System.out.println("JavaHome" + getJavaHome());		
-		System.out.println("JavaVendor" + getJavaVendor());
-		System.out.println("JavaVendorURL" + getJavaVendorURL());
-		System.out.println("JavaVersion" + getJavaVersion());		
-		System.out.println("LineSeparator" + getLineSeparator());
-		System.out.println("OSArch" + getOSArch());
-		System.out.println("OSName" + getOSName());
-		System.out.println("OSVersion" + getOSVersion());	
-		System.out.println("PathSeparator" + getPathSeparator());		
-		System.out.println("UserDir" + getUserDir());
-		System.out.println("UserHome" + getUserHome());
-		System.out.println("UserName" + getUserName());
-		
-	}
 }
