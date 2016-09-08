@@ -1,18 +1,90 @@
 package sort;
 
+import static java.lang.System.out;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
 public class Sort {
 	
+	/**
+	 * selection sort
+	 * @param arr
+	 */
+	
 	public static void seletion(int[] arr) {
-		
+		int temp = 0;
+		int index = 0;
+
+		for (int left = 0; left<arr.length-1 ; left++) {
+			index = left;
+			for (int right = left+1; right < arr.length ; right++ ) {
+				if (arr[right] < arr[index]) {
+					index = right;
+				}
+			}
+			if (index != left) {
+				temp = arr[index];
+				arr[index] = arr[left];
+				arr[left] = temp;
+			}		
+		}
 	}
+	/**
+	 * insert sort
+	 * @param arr
+	 */
 	
 	public static void insert(int[] arr) {
+		int left = 0 , right = 0, newVal = 0;
 		
-	}
+		for (right = 1 ; right <arr.length ; right++) {			
+			newVal = arr[right];
+		
+			if (newVal< arr[right-1]) {
+				left = right;
+				while (left >0 && arr[left-1] > newVal) {
+					arr[left--] = arr[left];
+				}
+				arr[left] = newVal;
+			}		
+		}
+	} 
+	
+	/**
+	 * bubble sorting  
+	 * @param arr
+	 */
 	
 	public static void bubble(int[] arr) {
+		boolean sorted = false;
+		int temp = 0;
+		int right = 1;
+		int len = arr.length;
 		
+		while (sorted == false) {
+			sorted = true;
+			for (int left = 0; left < len - right; left++) {
+				if (arr[left] > arr[left+1]) {
+					sorted = false;
+					temp = arr[left];
+					arr[left] = arr[left+1];
+					arr[left+1] = temp;
+				}
+			}
+			right++;
+		}
 	}
+	
+	/**
+	 * merge sort 
+	 * @param arr
+	 */
 	
 	public static void merge (int[] arr) {
 		int len = arr.length;
@@ -47,9 +119,69 @@ public class Sort {
 		}
 		System.arraycopy(result, start, arr, start,len+1);
 	}
+	
+	/**
+	 * open the array.txt file 
+	 * @param fileName 
+	 * @param length array length
+	 * @return the array from array.txt. file
+	 */
+	
+	static int[] getArray(String fileName ,int length) {
+		File file = new File(fileName);
+
+		BufferedReader bufferedReader = null;
+		int[] result = null;
+		try {
+			FileInputStream  fileInputStream = new FileInputStream(file);
+			bufferedReader =
+					new BufferedReader(new InputStreamReader(fileInputStream, StandardCharsets.UTF_8));	
+			String text = null;
+			result = new int[length];
+			int index = 0;
+			for (;;) {
+				text = bufferedReader.readLine();
+				if (text == null) {
+					break;
+				}
+				result[index++] = Integer.valueOf(text);
+			}	
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (bufferedReader != null) {
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * print array
+	 * @param arr the array we want to print
+	 */
+	public static void printArrays(int[] arr) {
+		StringBuilder stringBuilder = new StringBuilder("{");
+		int i = 0;
+		for ( ; i< arr.length-1; i++) {
+			stringBuilder.append(arr[i]).append(" ,");
+		}
+		stringBuilder.append(arr[i]).append("}");
+		out.println(stringBuilder);
+	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		int[] arr = getArray("c:\\text\\QuickSort.txt", 10000);
+//		int[] arr = {8,7,6,5,4,3,2,1};
+		insert(arr);
+		printArrays(arr);
+		
 
 	}
 
