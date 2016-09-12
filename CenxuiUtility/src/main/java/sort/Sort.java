@@ -81,6 +81,8 @@ public class Sort {
 		}
 	}
 	
+	
+	
 	/**
 	 * merge sort 
 	 * @param arr
@@ -91,6 +93,7 @@ public class Sort {
 		int[] result = new int[len];
 		sort(arr, result, 0,len-1);
 	}
+	
 	
 
 	static void sort(int[] arr, int[] result, int start, int end) {		
@@ -161,6 +164,74 @@ public class Sort {
 		}
 		return result;
 	}
+	
+	enum Pivot {
+		First,
+		Final,
+		MedianOfThree
+	}
+	
+	public static int quick(int[] arr) {
+		return quick(arr, 0, arr.length - 1, Pivot.MedianOfThree);
+	}
+	
+	static int quick(int[] arr, int from, int end, Pivot piv) {
+		if (from >= end) {
+			return 0 ;
+		}
+		
+		if (end - from != 1) {
+			switch (piv) {
+			case First:
+				break;
+			case Final:
+				swap(arr, from, end);;
+				break;
+			case MedianOfThree:
+				if (arr[from] < arr[(from + end)/2] ) {
+					if (arr[(from + end)/2] < arr[end]) {
+						swap(arr, from, (from + end)/2);
+					}else {
+						if (arr[from] < arr[end]) {
+							swap(arr, from, end);
+						}
+					}
+				}else {
+					if (arr[(from + end)/2] > arr[end]) {
+						swap(arr, from, (from + end)/2);
+					}else {
+						if (arr[from] > arr[end]) {
+							swap(arr, from, end);
+						}
+					}
+				}					
+				break;
+			}
+		}
+	
+		int count = 0;
+		int left = from + 1;
+	
+		for (int i = from + 1 ; i <= end; i++) {
+			if (arr[i] < arr[from]) {
+				swap(arr, left, i);
+				left++;
+			}
+			count++;
+		}
+		left--;
+		swap(arr, from, left);
+
+		count = count + quick(arr, from, left-1, piv) + quick(arr, left+1, end, piv);
+		return count;
+	}
+	
+	public static void swap(int[] arr, int left, int right) {
+		int temp = arr[left];
+		arr[left] = arr[right];
+		arr[right] = temp;
+	}
+	
 	
 	/**
 	 * print array
