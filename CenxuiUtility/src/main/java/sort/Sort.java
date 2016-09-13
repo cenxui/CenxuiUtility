@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
 public class Sort {
 	
@@ -94,8 +95,6 @@ public class Sort {
 		sort(arr, result, 0,len-1);
 	}
 	
-	
-
 	static void sort(int[] arr, int[] result, int start, int end) {		
 		if (start >= end) return ;
 		
@@ -171,13 +170,13 @@ public class Sort {
 		MedianOfThree
 	}
 	
-	public static int quick(int[] arr) {
-		return quick(arr, 0, arr.length - 1, Pivot.MedianOfThree);
+	public static void quick(int[] arr) {
+		quick(arr, 0, arr.length - 1, Pivot.MedianOfThree);
 	}
 	
-	static int quick(int[] arr, int from, int end, Pivot piv) {
+	static void quick(int[] arr, int from, int end, Pivot piv) {
 		if (from >= end) {
-			return 0 ;
+			return;
 		}
 		
 		if (end - from != 1) {
@@ -208,8 +207,7 @@ public class Sort {
 				break;
 			}
 		}
-	
-		int count = 0;
+		
 		int left = from + 1;
 	
 		for (int i = from + 1 ; i <= end; i++) {
@@ -217,13 +215,12 @@ public class Sort {
 				swap(arr, left, i);
 				left++;
 			}
-			count++;
 		}
 		left--;
 		swap(arr, from, left);
 
-		count = count + quick(arr, from, left-1, piv) + quick(arr, left+1, end, piv);
-		return count;
+		quick(arr, from, left-1, piv);
+		quick(arr, left+1, end, piv);
 	}
 	
 	public static void swap(int[] arr, int left, int right) {
@@ -231,7 +228,6 @@ public class Sort {
 		arr[left] = arr[right];
 		arr[right] = temp;
 	}
-	
 	
 	/**
 	 * print array
@@ -246,14 +242,61 @@ public class Sort {
 		stringBuilder.append(arr[i]).append("}");
 		out.println(stringBuilder);
 	}
+	
+	/**
+	 * shell sort
+	 * @param arr
+	 */
+	
+	public static void shell(int[] arr) {
+		int gap = arr.length;
+		
+		while (gap > 0) {
+			if (gap == 2) {
+				gap = 1;
+			}else {
+				gap = gap/2;
+			}
+			
+			for (int i = 0; i < arr.length - gap; i++) {
+				if (arr[i] > arr[i + gap]) {
+					swap(arr, i, i + gap);
+					
+					for ( int j = i; j>0 && j>gap; ) {
+						if (arr[j] > arr[j-gap]) {
+							break;
+						}
+						swap(arr,j - gap, j);
+						j = j - gap;
+					}
+				}
+			}		
+		}	
+	}
+	
+	/**
+	 * 
+	 * @param arr
+	 * @return true if is sorted, false if there is an element not sorted
+	 */
+	
+	public static boolean isSorted(int[] arr) {
+		for (int i = 1; i < arr.length; i++) {
+			if (arr[i-1] > arr[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public static void main(String[] args) {
-		int[] arr = getArray("c:\\text\\QuickSort.txt", 10000);
-//		int[] arr = {8,7,6,5,4,3,2,1};
-		insert(arr);
+		int[] arr = getArray("c:\\text\\100.txt", 100);
 		printArrays(arr);
+		shell(arr);
+		printArrays(arr);
+		out.print(isSorted(arr));
+		
 		
 
 	}
-
 }
